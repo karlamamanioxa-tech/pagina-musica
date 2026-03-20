@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Título dinámico desde la base de datos -->
+    <title>{{ configuracion["nombre_sitio"] }} – {{ configuracion["tagline"] }}</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+<head>
+<body>
+    <a class="skip-link" href=""> Saltar al contenido </a>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="#">
+                <img width="150px" height="50px" class="logo" src="{{ url_for('static', filename='images/logo/logo.png') }}"alt="Ritmo">
+            </a>
+            <nav class="nav">
+                <a href="#servicios">Cursos</a>
+                <a href="#nosotros">Nosotros</a>
+                <a href="#contacto">Contacto</a>
+            </nav>
+            <a href="#contacto" class="btn btn-primary">Unirse</a>
+        </div>
+    </header>
+    <main>
+        <section class="hero">
+        <div class="container hero-inner">
+            <div class="hero-copy">
+                <!-- Mensaje superior dinámico -->
+                <p class="pill">{{ hero["mensaje_superior"] }}</p>
+                <!-- Título dinámico -->
+                <h1>{{ hero["titulo"] }}</h1>
+                <!-- Descripción dinámica -->
+                <p class="lead">{{ hero["descripcion"] }}</p>
+
+                <div class="hero-actions">
+                    <!-- Botones dinámicos -->
+                    <a class="btn btn-primary" href="{{ hero['boton_1_url'] }}">{{ hero["boton_1_texto"] }}</a>
+                    <a class="btn btn-ghost" href="{{ hero['boton_2_url'] }}">{{ hero["boton_2_texto"] }}</a>
+                </div>
+
+                <div class="hero-metrics">
+                    <!-- Estadísticas dinámicas -->
+                    {% for estadistica in estadisticas %}
+                    <div class="metric">
+                        <span class="metric-num">{{ estadistica["valor"] }}</span>
+                        <span class="metric-label">{{ estadistica["nombre"] }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- Tarjeta de imagen dinámica -->
+            <div class="hero-card hero-card-img">
+                <img src="{{ url_for('static', filename='images/musica/hero-placeholder.png') }}" alt="Imagen de música" />
+            </div>
+            </div>
+        </section>
+
+        <!-- CURSOS / SERVICIOS -->
+        <section id="servicios" class="section">
+            <div class="container">
+                <header class="section-head">
+                    <h2>Cursos</h2>
+                    <p>Descubre nuestros cursos para todo tipo de músicos.</p>
+                </header>
+
+                <div class="grid-3">
+                    <!-- Cursos dinámicos -->
+                    {% for curso in cursos %}
+                    <article class="card">
+                        <img src="{{ url_for('static', filename=curso['imagen']) }}" alt="{{ curso['titulo'] }}" />
+                        <h3>{{ curso["titulo"] }}</h3>
+                        <p>{{ curso["descripcion"] }}</p>
+                        <ul class="list">
+                            {% for caracteristica in curso.caracteristicas %}
+                            <li>{{ caracteristica }}</li>
+                            {% endfor %}
+                        </ul>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- NOSOTROS -->
+        <section id="nosotros" class="section alt">
+            <div class="container split">
+                <!-- Imagen dinámica -->
+                <div class="about-gallery">
+                    <img src="{{ url_for('static', filename='images/nosotros/nosotros.jpg') }}" alt="Equipo creativo produciendo música en estudio" />
+                </div>
+                <!-- Contenido dinámico -->
+                <div class="about-content">
+                    <h2>{{ nosotros["titulo"] }}</h2>
+                    <p>{{ nosotros["descripcion_1"] }}</p>
+                    <p class="muted">{{ nosotros["descripcion_2"] }}</p>
+
+                    <div class="panel about-panel">
+                        <h3>{{ nosotros["subtitulo"] }}</h3>
+                        <p class="muted">{{ nosotros["resumen"] }}</p>
+
+                        <div class="tags">
+                            <!-- Valores dinámicos -->
+                            {% for valor in valores %}
+                            <span class="tag">{{ valor["nombre"] }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACTO -->
+      <section id="contacto" class="section">
+        <div class="container">
+          <header class="section-head">
+            <h2>Contacto</h2>
+            <p>¿Tienes preguntas? ¡Escríbenos!</p>
+          </header>
+          <form class="form" action="/contacto" method="POST">
+            <div class="form-row">
+              <label>
+                Nombre
+                <input
+                  type="text"
+                  name="nombre"
+                  placeholder="Tu nombre"
+                  required
+                />
+              </label>
+
+              <label>
+                Email
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="tucorreo@dominio.com"
+                  required
+                />
+              </label>
+            </div>
+
+            <label>
+              Mensaje
+              <textarea
+                name="mensaje"
+                rows="5"
+                placeholder="Cuéntanos qué necesitas..."
+                required
+              ></textarea>
+            </label>
+
+            <button class="btn btn-primary" type="submit">Enviar</button>
+          </form>
+        </div>
+      </section>
+      
+
+    </main>
+    <footer>
+    <div class="container" style="text-align: center; padding: 40px 0;">
+        <p>{{ configuracion["footer_texto"] }}</p>
+        <p style="font-size: 0.8em; color: gray; margin-top: 10px;">
+            {{ configuracion["direccion_contacto"] }} | {{ configuracion["email_contacto"] }}
+        </p>
+    </div>
+    </footer>
+</body>
+
+</html>
